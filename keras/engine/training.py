@@ -605,7 +605,8 @@ class Model(Container):
         for i in range(len(self.outputs)):
             shape = self.internal_output_shapes[i]
             name = self.output_names[i]
-            self.targets.append(K.placeholder(ndim=len(shape), name=name + '_target'))
+            dtype = 'int32' if 'sparse' in self.loss_functions[i].__name__ else K.floatx()
+            self.targets.append(K.placeholder(ndim=len(shape), dtype=dtype, name=name + '_target'))
 
         # prepare metrics
         self.metrics = metrics
